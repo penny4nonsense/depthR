@@ -1,0 +1,53 @@
+#' Spatial Depth
+#'
+#' Computes the spatial depth of one or more query points with respect
+#' to a reference distribution estimated from \code{data}.
+#'
+#' @details
+#' Spatial depth is defined as 1 minus the norm of the mean unit vector
+#' pointing from the data toward the query point. Unlike other depth
+#' functions in this package, it has a closed-form sample estimate with
+#' no Monte Carlo approximation required — making it the fastest depth
+#' function here, suitable for very large n and d.
+#'
+#' Spatial depth is orthogonally invariant but not affine invariant.
+#' For affine invariant depth use \code{projection_depth} or
+#' \code{tukey_depth}.
+#'
+#' @param x Numeric matrix of query points (m x d), or a numeric vector of
+#'   length d for a single point.
+#' @param data Numeric matrix of reference data (n x d).
+#'
+#' @return Numeric vector of depth values in [0, 1], one per query point.
+#'
+#' @references
+#' Vardi, Y. & Zhang, C.-H. (2000). The multivariate L1-median and
+#' associated data depth. \emph{Proceedings of the National Academy of
+#' Sciences}, 97(4), 1423--1426.
+#'
+#' @examples
+#' \dontrun{
+#' set.seed(42)
+#' data <- matrix(rnorm(500), nrow = 100, ncol = 5)
+#' x    <- matrix(rnorm(25),  nrow = 5,   ncol = 5)
+#'
+#' spatial_depth(x, data)
+#'
+#' dd <- compute_depth(data, depth_fn = spatial_depth)
+#' median(dd)
+#' outliers(dd)
+#' }
+#'
+#' @export
+spatial_depth <- function(x, data) {
+  if (is.vector(x) && !is.list(x)) {
+    x <- matrix(x, nrow = 1L)
+  }
+  if (!is.matrix(x))    x    <- as.matrix(x)
+  if (!is.matrix(data)) data <- as.matrix(data)
+
+  storage.mode(x)    <- "double"
+  storage.mode(data) <- "double"
+
+  .spatial_depth_cpp(x = x, data = data)
+}

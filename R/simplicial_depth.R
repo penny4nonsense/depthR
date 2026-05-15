@@ -1,0 +1,83 @@
+#' Liu Simplicial Depth
+#'
+#' Computes the simplicial depth of one or more query points with respect
+#' to a reference distribution estimated from \code{data}, using an adaptive
+#' Monte Carlo approximation with parallel computation.
+#'
+#' @details
+#' Simplicial depth is the probability that a random simplex formed by d+1
+#' points drawn from the data contains the query point. It is a genuine
+#' multivariate generalization of the median with strong geometric
+#' intuition and no distributional assumptions.
+#'
+#' The deepest point — the simplicial median — is a robust estimator of
+#' location that reduces to the univariate median when d=1.
+#'
+#' @param x Numeric matrix of query points (m x d), or a numeric vector of
+#'   length d for a single point.
+#' @param data Numeric matrix of reference data (n x d). Must have at least
+#'   d+1 rows.
+#' @param tol Relative standard error tolerance for the adaptive stopping
+#'   rule. Sampling stops when the standard error of the depth estimate
+#'   drops below \code{tol} times the estimate itself. Default 0.05.
+#' @param batch_size Number of random simplices sampled per batch. Default
+#'   200.
+#' @param min_batches Minimum number of batches before checking convergence.
+#'   Default 3.
+#' @param max_batches Maximum number of batches regardless of convergence.
+#'   Acts as a hard cap on computation time. Default 20.
+#' @param seed Integer random seed for reproducibility. Default 42.
+#'
+#' @return Numeric vector of depth values in [0, 1], one per query point.
+#'   Higher values indicate greater centrality.
+#'
+#' @references
+#' Liu, R. Y. (1990). On a notion of data depth based on random simplices.
+#' \emph{Annals of Statistics}, 18(1), 405--414.
+#'
+#' Zuo, Y. & Serfling, R. (2000). General notions of statistical depth
+#' function. \emph{Annals of Statistics}, 28(2), 461--482.
+#'
+#' @examples
+#' \dontrun{
+#' set.seed(42)
+#' data <- matrix(rnorm(500), nrow = 100, ncol = 5)
+#' x    <- matrix(rnorm(25),  nrow = 5,   ncol = 5)
+#'
+#' # Basic usage
+#' simplicial_depth(x, data)
+#'
+#' # Via compute_depth for full depth object
+#' dd <- compute_depth(data, depth_fn = simplicial_depth)
+#' median(dd)
+#' outliers(dd)
+#' plot(dd)
+#' }
+#'
+#' @export
+simplicial_depth <- function(x, data,
+                              tol         = 0.05,
+                              batch_size  = 200L,
+                              min_batches = 3L,
+                              max_batches = 20L,
+                              seed        = 42L) {
+  # Coerce inputs
+  if (is.vector(x) && !is.list(x)) {
+    x <- matrix(x, nrow = 1L)
+  }
+  if (!is.matrix(x))    x    <- as.matrix(x)
+  if (!is.matrix(data)) data <- as.matrix(data)
+
+  storage.mode(x)    <- "double"
+  storage.mode(data) <- "double"
+
+  .simplicial_depth_cpp(
+    x           = x,
+    data        = data,
+    tol         = tol,
+    batch_size  = as.integer(batch_size),
+    min_batches = as.integer(min_batches),
+    max_batches = as.integer(max_batches),
+    seed        = as.integer(seed)
+  )
+}
