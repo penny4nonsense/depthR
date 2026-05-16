@@ -1,3 +1,9 @@
+# depthR 0.1.3
+
+* Fixed Debian/Linux linking failure by adding fallback to explicit -ltbb
+  linking in configure script when RcppParallel::RcppParallelLibs() returns
+  empty.
+
 # depthR 0.1.2
 
 * Fixed Linux/Debian installation failure by replacing src/Makevars $(shell ...)

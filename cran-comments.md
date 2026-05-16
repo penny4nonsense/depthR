@@ -1,13 +1,10 @@
-## Resubmission (0.1.2)
+## Resubmission (0.1.3)
 
-This is a second resubmission addressing the Debian installation failure.
+This is a third resubmission addressing a persistent Debian linking failure.
 
-* Replaced src/Makevars $(shell ...) with a configure script that generates
-  src/Makevars at build time via RcppParallel::RcppParallelLibs(). This
-  eliminates both the GNU extensions warning and the Debian linking failure.
-* Added cleanup script to remove the generated src/Makevars after build.
-* src/Makevars.win handles Windows-specific flags without GNU extensions.
-* Updated RoxygenNote to 8.0.0.
+* The configure script now falls back to explicit -ltbb linking when
+  RcppParallel::RcppParallelLibs() returns empty, which occurs on the
+  CRAN Debian check system despite RcppParallel being installed.
 
 ## R CMD check results
 
