@@ -3,7 +3,13 @@
 * Fixed Debian/Linux linking failure by adding fallback to explicit -ltbb
   linking in configure script when RcppParallel::RcppParallelLibs() returns
   empty.
-
+* Reduced vignette computation time to comply with CRAN's 10-minute check
+  limit. Monte Carlo depth functions now use smaller batch sizes and datasets
+  in vignette examples.
+* Fixed GitHub URL typo in DESCRIPTION (penn4nonsense -> penny4nonsense).
+* Single-quoted software names 'Rcpp' and 'RcppEigen' in DESCRIPTION per
+  CRAN policy.
+  
 # depthR 0.1.2
 
 * Fixed Linux/Debian installation failure by replacing src/Makevars $(shell ...)

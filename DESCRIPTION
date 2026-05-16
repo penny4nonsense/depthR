@@ -10,7 +10,7 @@ Description: Efficient computation of multivariate statistical depth functions
     in arbitrary dimension d. Implements Mahalanobis depth, Tukey (halfspace)
     depth, Liu simplicial depth (via adaptive Monte Carlo), projection depth,
     and spatial depth. Provides depth-based medians, central regions, outlier
-    detection, and depth-depth plots. C++ backends via Rcpp and RcppEigen
+    detection, and depth-depth plots. C++ backends via 'Rcpp' and 'RcppEigen'
     ensure performance at large n and d.
 License: GPL (>= 3)
 URL: https://github.com/penny4nonsense/depthR

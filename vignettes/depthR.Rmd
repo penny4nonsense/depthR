@@ -58,7 +58,7 @@ baseline — it is fast and closed-form, but assumes elliptical symmetry and has
 zero breakdown point.
 
 ```{r mahalanobis-example}
-data <- matrix(rnorm(500), nrow = 100, ncol = 5)
+data <- matrix(rnorm(200), nrow = 50, ncol = 4)
 x    <- rbind(colMeans(data),        # center
               colMeans(data) + 3)    # outlier direction
 
@@ -77,7 +77,7 @@ Zuo-Serfling axioms. Exact computation is $O(n^{d-1})$; depthR uses an
 adaptive random projection approximation.
 
 ```{r tukey-example}
-tukey_depth(x, data)
+tukey_depth(x, data, batch_size = 50, min_batches = 3, patience = 2)
 ```
 
 ### Liu Simplicial Depth
@@ -92,7 +92,7 @@ univariate median when $d = 1$. depthR uses adaptive Monte Carlo with a
 Bernoulli standard error stopping rule.
 
 ```{r simplicial-example}
-simplicial_depth(x, data)
+simplicial_depth(x, data, batch_size = 50, min_batches = 3, max_batches = 5)
 ```
 
 ### Projection Depth
@@ -108,7 +108,7 @@ Projection depth uses median and MAD rather than mean and SD, giving it a high
 breakdown point. It is affine invariant.
 
 ```{r projection-example}
-projection_depth(x, data)
+projection_depth(x, data, batch_size = 50, min_batches = 3, patience = 2)
 ```
 
 ### Spatial Depth
@@ -120,7 +120,7 @@ $$SpD(x, F) = 1 - \left\| E\left[ \frac{x - X}{\|x - X\|} \right] \right\|$$
 
 Spatial depth is the only function in depthR with a closed-form sample
 estimate — no Monte Carlo needed. This makes it extremely fast even at large
-$n$ and $d$. It is orthogonally invariant but not affine invariant.
+$n$ and $d$.
 
 ```{r spatial-example}
 spatial_depth(x, data)
@@ -135,7 +135,7 @@ from which medians, ranks, outliers, and central regions can be extracted
 without recomputing depth.
 
 ```{r compute-depth}
-dd <- compute_depth(data, depth_fn = simplicial_depth)
+dd <- compute_depth(data, depth_fn = mahalanobis_depth)
 dd
 ```
 
@@ -145,10 +145,9 @@ The deepest point — a genuine robust estimator of multivariate location.
 
 ```{r depth-median}
 m <- median(dd)
-cat("Simplicial median (index", m$index, "):\n")
+cat("Median index:", m$index, "\n")
 print(round(m$point, 3))
 cat("Depth:", round(m$depth, 4), "\n")
-cat("True center (origin):", paste(rep(0, 5), collapse = ", "), "\n")
 ```
 
 ### Depth-Based Ranks
@@ -158,44 +157,33 @@ outlying.
 
 ```{r depth-ranks}
 r <- rank(dd)
-cat("5 deepest observations (ranks 1-5):\n")
+cat("5 deepest observations:\n")
 print(which(r <= 5))
-cat("5 most outlying observations (ranks 96-100):\n")
-print(which(r >= 96))
 ```
 
 ### Central Region
 
-The inner $1 - \alpha$ fraction of the data by depth — the multivariate analog
-of a quantile interval.
+The inner $1 - \alpha$ fraction of the data by depth.
 
 ```{r central-region}
 cr <- central_region(dd, alpha = 0.50)
-cat("Inner 50% of data contains", length(cr$indices), "observations\n")
-cat("Depth threshold:", round(cr$threshold, 4), "\n")
+cat("Inner 50% contains", length(cr$indices), "observations\n")
 ```
 
 ---
 
 ## Outlier Detection
 
-Depth-based outlier detection is more principled than the univariate IQR
-approach because it accounts for the multivariate structure of the data. A
-point can be deep in every marginal direction yet still be an outlier in the
-joint distribution — depth catches this, IQR does not.
-
 ```{r outlier-setup}
-# Clean data plus 10 injected outliers
 set.seed(1)
-clean    <- matrix(rnorm(400), nrow = 200, ncol = 2)
-outliers_injected <- matrix(runif(20, min = 4, max = 6), nrow = 10, ncol = 2)
+clean    <- matrix(rnorm(200), nrow = 100, ncol = 2)
+outliers_injected <- matrix(runif(10, min = 4, max = 6), nrow = 5, ncol = 2)
 contaminated <- rbind(clean, outliers_injected)
 
-# Depth-based detection
-dd_cont <- compute_depth(contaminated, depth_fn = tukey_depth)
+dd_cont <- compute_depth(contaminated, depth_fn = mahalanobis_depth)
 out     <- outliers(dd_cont, threshold = 0.05)
 
-cat("Injected outliers are rows 201-210\n")
+cat("Injected outliers are rows 101-105\n")
 cat("Detected outlier indices:\n")
 print(sort(out$indices))
 ```
@@ -204,120 +192,58 @@ print(sort(out$indices))
 
 ```{r outlier-plot}
 plot(dd_cont, outlier_threshold = 0.05,
-     main = "Tukey depth — injected outliers flagged in red")
+     main = "Mahalanobis depth — injected outliers flagged in red")
 ```
 
 ---
 
 ## The DD-Plot
 
-The depth-depth plot is the multivariate analog of the QQ-plot. Each
-observation from both samples is plotted at (depth wrt X, depth wrt Y). If
-the distributions are the same, points fall near the diagonal.
-
-### Same Distribution
+The depth-depth plot is the multivariate analog of the QQ-plot.
 
 ```{r dd-same}
 set.seed(2)
-x_same <- matrix(rnorm(400), nrow = 200, ncol = 2)
-y_same <- matrix(rnorm(400), nrow = 200, ncol = 2)
+x_same <- matrix(rnorm(200), nrow = 100, ncol = 2)
+y_same <- matrix(rnorm(200), nrow = 100, ncol = 2)
 
 dd_plot(x_same, y_same,
         depth_fn = mahalanobis_depth,
         main     = "DD-Plot: same distribution")
 ```
 
-Points from both samples scatter symmetrically around the diagonal — no
-evidence of distributional difference.
-
-### Location Shift
-
 ```{r dd-shift}
-y_shift <- matrix(rnorm(400, mean = 2), nrow = 200, ncol = 2)
+y_shift <- matrix(rnorm(200, mean = 2), nrow = 100, ncol = 2)
 
 dd_plot(x_same, y_shift,
         depth_fn = mahalanobis_depth,
         main     = "DD-Plot: location shift of 2")
 ```
 
-X points (blue) sit above the diagonal — they are deeper in X than in Y. Y
-points (red) sit below — deeper in Y than in X. The separation is clear.
-
 ---
 
 ## High-Dimensional Performance
 
-The key differentiator of depthR is that it works in high dimension. Here we
-demonstrate on $d = 20$, which would be computationally infeasible for most
-existing R depth packages.
+depthR works in high dimension. Here we demonstrate on $d = 10$.
 
 ```{r high-d}
 set.seed(3)
-n <- 200
-d <- 20
+n <- 100
+d <- 10
 data_hd <- matrix(rnorm(n * d), nrow = n, ncol = d)
+x_hd    <- rbind(colMeans(data_hd), colMeans(data_hd) + 4)
 
-# Query points: center and an outlier
-x_hd <- rbind(colMeans(data_hd),
-               colMeans(data_hd) + 4)
-
-# All five depth functions at d = 20
 cat("Dimension d =", d, ", n =", n, "\n\n")
 
 cat("Mahalanobis depth:\n")
 print(round(mahalanobis_depth(x_hd, data_hd), 4))
 
 cat("\nTukey depth:\n")
-print(round(tukey_depth(x_hd, data_hd), 4))
-
-cat("\nSimplicial depth:\n")
-print(round(simplicial_depth(x_hd, data_hd), 4))
-
-cat("\nProjection depth:\n")
-print(round(projection_depth(x_hd, data_hd), 4))
+print(round(tukey_depth(x_hd, data_hd,
+            batch_size = 50, min_batches = 3, patience = 2), 4))
 
 cat("\nSpatial depth:\n")
 print(round(spatial_depth(x_hd, data_hd), 4))
 ```
-
-In every case the central point has substantially higher depth than the outlier,
-demonstrating that all five functions work correctly in $d = 20$.
-
----
-
-## Comparing Depth Functions
-
-Different depth functions have different properties. Here we compute all five
-on the same dataset and compare the depth-based medians.
-
-```{r compare}
-set.seed(4)
-data2 <- matrix(rnorm(300), nrow = 100, ncol = 3)
-
-fns <- list(
-  Mahalanobis = mahalanobis_depth,
-  Tukey       = tukey_depth,
-  Simplicial  = simplicial_depth,
-  Projection  = projection_depth,
-  Spatial     = spatial_depth
-)
-
-medians <- lapply(names(fns), function(nm) {
-  dd  <- compute_depth(data2, depth_fn = fns[[nm]])
-  med <- median(dd)
-  round(med$point, 3)
-})
-names(medians) <- names(fns)
-
-cat("Depth medians (true center is origin):\n\n")
-for (nm in names(medians)) {
-  cat(sprintf("%-15s: %s\n", nm,
-              paste(medians[[nm]], collapse = "  ")))
-}
-```
-
-All five medians are close to the origin, confirming that each depth function
-correctly identifies the center of a standard normal distribution.
 
 ---
 

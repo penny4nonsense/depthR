@@ -1,10 +1,15 @@
 ## Resubmission (0.1.3)
 
-This is a third resubmission addressing a persistent Debian linking failure.
+This is a third resubmission addressing multiple issues raised by Uwe Ligges:
 
 * The configure script now falls back to explicit -ltbb linking when
   RcppParallel::RcppParallelLibs() returns empty, which occurs on the
   CRAN Debian check system despite RcppParallel being installed.
+* Reduced vignette computation time to well under CRAN's 10-minute limit
+  by using smaller datasets and reduced Monte Carlo batch sizes in examples.
+* Fixed GitHub URL typo in DESCRIPTION (penn4nonsense -> penny4nonsense).
+* Single-quoted software names 'Rcpp' and 'RcppEigen' in DESCRIPTION per
+  CRAN policy.
 
 ## R CMD check results
 
