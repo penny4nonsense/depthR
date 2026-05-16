@@ -13,7 +13,7 @@ Description: Efficient computation of multivariate statistical depth functions
     detection, and depth-depth plots. C++ backends via Rcpp and RcppEigen
     ensure performance at large n and d.
 License: GPL (>= 3)
-URL: https://github.com/penn4nonsense/depthR
+URL: https://github.com/penny4nonsense/depthR
 BugReports: https://github.com/penny4nonsense/depthR/issues
 Imports:
     Rcpp (>= 1.0.0),
