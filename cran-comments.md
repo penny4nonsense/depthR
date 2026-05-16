@@ -1,49 +1,35 @@
-## Resubmission
+## Resubmission (0.1.2)
 
-This is a resubmission. The following issues from the initial review have been addressed:
+This is a second resubmission addressing the Debian installation failure.
 
-* Fixed Debian/Linux installation failure caused by missing RcppParallel
-  linker flags. Updated src/Makevars to use portable
-  `"${R_HOME}/bin/Rscript"` syntax for RcppParallel::RcppParallelLibs().
-* Added src/Makevars.win for Windows-specific build configuration without
-  GNU extensions.
-* Fixed GitHub URL (repository is now public).
-* Added cran-comments.md to .Rbuildignore.
-* Quoted technical terms in DESCRIPTION (Liu, Rcpp, RcppEigen, halfspace,
-  simplicial, backends).
+* Replaced src/Makevars $(shell ...) with a configure script that generates
+  src/Makevars at build time via RcppParallel::RcppParallelLibs(). This
+  eliminates both the GNU extensions warning and the Debian linking failure.
+* Added cleanup script to remove the generated src/Makevars after build.
+* src/Makevars.win handles Windows-specific flags without GNU extensions.
+* Updated RoxygenNote to 8.0.0.
 
 ## R CMD check results
 
-0 errors | 1 warning | 3 notes
-
-## Warning
-
-* WARNING: GNU extensions in src/Makevars ($(shell ...)).
-  The src/Makevars file uses $(shell ...) to obtain RcppParallel linker
-  flags dynamically via RcppParallel::RcppParallelLibs(). This is the
-  approach recommended by the RcppParallel package documentation and is
-  necessary for correct linking on Linux and macOS. The src/Makevars.win
-  file used on Windows does not use GNU extensions. This pattern is used
-  by many CRAN packages that depend on RcppParallel.
+0 errors | 0 warnings | 4 notes
 
 ## Notes
+
+* NOTE: Unable to verify current time — environment issue, not a package
+  problem.
 
 * NOTE: Versioned LinkingTo values for RcppEigen and RcppParallel are only
   usable in R >= 3.0.2. This is intentional — the package requires modern
   Eigen and RcppParallel for correct parallel operation.
 
+* NOTE: cran-comments.md at top level — listed in .Rbuildignore and not
+  included in the package tarball.
+
 * NOTE: Pragmas suppressing -Wignored-attributes in C++ files. These suppress
   spurious SIMD attribute warnings from Eigen on MinGW/Windows that are not
   indicative of any actual problem.
 
-* NOTE: cran-comments.md at top level. This file is listed in .Rbuildignore
-  and is not included in the package tarball.
-
 ## Test environments
 
-* Windows 11, R 4.5.3 (local)
+* Windows 11, R 4.3.1 (local)
 * win-builder (R-devel)
-
-## Resubmission notes
-
-This is the first CRAN release of depthR.

@@ -1,3 +1,10 @@
+# depthR 0.1.2
+
+* Fixed Linux/Debian installation failure by replacing src/Makevars $(shell ...)
+  with a configure script that generates src/Makevars at build time.
+* Added cleanup script to remove generated src/Makevars after build.
+* Updated RoxygenNote to 8.0.0.
+
 # depthR 0.1.1
 
 * Fixed Debian/Linux installation failure due to missing RcppParallel 
