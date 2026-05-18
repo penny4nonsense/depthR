@@ -1,3 +1,16 @@
+# depthR 0.1.4
+
+* Set eval = FALSE on all Monte Carlo vignette chunks (Tukey, simplicial,
+  and projection depth) and replaced with pre-computed static output. Only
+  closed-form functions (Mahalanobis and spatial depth) now execute during
+  check. This resolves the Windows check timeout caused by developing on a
+  multi-core machine where RcppParallel masked the true single-core runtime.
+* Added skip_on_cran() to test files for Monte Carlo depth functions
+  (Tukey, simplicial, projection) and DD-plot to prevent test suite
+  timeout on CRAN check machines.
+* Fixed GitHub URL typo in DESCRIPTION (penn4nonsense -> penny4nonsense).
+* Single-quoted 'Rcpp' and 'RcppEigen' in DESCRIPTION per CRAN policy.
+
 # depthR 0.1.3
 
 * Fixed Debian/Linux linking failure by adding fallback to explicit -ltbb
@@ -6,9 +19,6 @@
 * Reduced vignette computation time to comply with CRAN's 10-minute check
   limit. Monte Carlo depth functions now use smaller batch sizes and datasets
   in vignette examples.
-* Fixed GitHub URL typo in DESCRIPTION (penn4nonsense -> penny4nonsense).
-* Single-quoted software names 'Rcpp' and 'RcppEigen' in DESCRIPTION per
-  CRAN policy.
   
 # depthR 0.1.2
 

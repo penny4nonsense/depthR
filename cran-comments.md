@@ -1,37 +1,21 @@
-## Resubmission (0.1.3)
+## Resubmission (0.1.4)
 
-This is a third resubmission addressing multiple issues raised by Uwe Ligges:
+This is a fourth resubmission. I have been extra careful this time to ensure
+the check time issue is fully resolved.
 
-* The configure script now falls back to explicit -ltbb linking when
-  RcppParallel::RcppParallelLibs() returns empty, which occurs on the
-  CRAN Debian check system despite RcppParallel being installed.
-* Reduced vignette computation time to well under CRAN's 10-minute limit
-  by using smaller datasets and reduced Monte Carlo batch sizes in examples.
+The previous timeout was caused by developing on a 32-core Threadripper where
+RcppParallel distributes Monte Carlo iterations across all cores, making the
+vignette appear fast locally while running for 100+ minutes on a single-core
+check machine.
+
+The following changes have been made:
+
+* Set eval = FALSE on all Monte Carlo vignette chunks (Tukey, simplicial,
+  projection depth) and replaced with pre-computed static output. Only
+  closed-form functions (Mahalanobis, spatial) now execute during check.
+  The vignette was verified to build in under 5 seconds locally after
+  these changes.
+* Fixed Debian/Linux linking failure by adding -ltbb fallback in the
+  configure script.
 * Fixed GitHub URL typo in DESCRIPTION (penn4nonsense -> penny4nonsense).
-* Single-quoted software names 'Rcpp' and 'RcppEigen' in DESCRIPTION per
-  CRAN policy.
-
-## R CMD check results
-
-0 errors | 0 warnings | 4 notes
-
-## Notes
-
-* NOTE: Unable to verify current time — environment issue, not a package
-  problem.
-
-* NOTE: Versioned LinkingTo values for RcppEigen and RcppParallel are only
-  usable in R >= 3.0.2. This is intentional — the package requires modern
-  Eigen and RcppParallel for correct parallel operation.
-
-* NOTE: cran-comments.md at top level — listed in .Rbuildignore and not
-  included in the package tarball.
-
-* NOTE: Pragmas suppressing -Wignored-attributes in C++ files. These suppress
-  spurious SIMD attribute warnings from Eigen on MinGW/Windows that are not
-  indicative of any actual problem.
-
-## Test environments
-
-* Windows 11, R 4.3.1 (local)
-* win-builder (R-devel)
+* Single-quoted 'Rcpp' and 'RcppEigen' in DESCRIPTION per CRAN policy.

@@ -76,8 +76,11 @@ The Tukey median has breakdown point up to $1/(d+1)$ and satisfies all four
 Zuo-Serfling axioms. Exact computation is $O(n^{d-1})$; depthR uses an
 adaptive random projection approximation.
 
-```{r tukey-example}
+```{r tukey-example, eval = FALSE}
 tukey_depth(x, data, batch_size = 50, min_batches = 3, patience = 2)
+```
+```
+#> [1] 0.4 0.0
 ```
 
 ### Liu Simplicial Depth
@@ -91,8 +94,11 @@ Simplicial depth has a beautiful geometric interpretation and reduces to the
 univariate median when $d = 1$. depthR uses adaptive Monte Carlo with a
 Bernoulli standard error stopping rule.
 
-```{r simplicial-example}
+```{r simplicial-example, eval = FALSE}
 simplicial_depth(x, data, batch_size = 50, min_batches = 3, max_batches = 5)
+```
+```
+#> [1] 0.104 0.000
 ```
 
 ### Projection Depth
@@ -107,8 +113,11 @@ PD(x, F) = \frac{1}{1 + O(x, F)}$$
 Projection depth uses median and MAD rather than mean and SD, giving it a high
 breakdown point. It is affine invariant.
 
-```{r projection-example}
+```{r projection-example, eval = FALSE}
 projection_depth(x, data, batch_size = 50, min_batches = 3, patience = 2)
+```
+```
+#> [1] 0.63968225 0.08674677
 ```
 
 ### Spatial Depth
@@ -176,9 +185,9 @@ cat("Inner 50% contains", length(cr$indices), "observations\n")
 
 ```{r outlier-setup}
 set.seed(1)
-clean    <- matrix(rnorm(200), nrow = 100, ncol = 2)
+clean             <- matrix(rnorm(200), nrow = 100, ncol = 2)
 outliers_injected <- matrix(runif(10, min = 4, max = 6), nrow = 5, ncol = 2)
-contaminated <- rbind(clean, outliers_injected)
+contaminated      <- rbind(clean, outliers_injected)
 
 dd_cont <- compute_depth(contaminated, depth_fn = mahalanobis_depth)
 out     <- outliers(dd_cont, threshold = 0.05)
@@ -225,22 +234,32 @@ dd_plot(x_same, y_shift,
 
 depthR works in high dimension. Here we demonstrate on $d = 10$.
 
-```{r high-d}
+```{r high-d-setup}
 set.seed(3)
-n <- 100
-d <- 10
+n       <- 100
+d       <- 10
 data_hd <- matrix(rnorm(n * d), nrow = n, ncol = d)
 x_hd    <- rbind(colMeans(data_hd), colMeans(data_hd) + 4)
+cat("Dimension d =", d, ", n =", n, "\n")
+```
 
-cat("Dimension d =", d, ", n =", n, "\n\n")
-
+```{r high-d-mahal}
 cat("Mahalanobis depth:\n")
 print(round(mahalanobis_depth(x_hd, data_hd), 4))
+```
 
+```{r high-d-tukey, eval = FALSE}
 cat("\nTukey depth:\n")
 print(round(tukey_depth(x_hd, data_hd,
             batch_size = 50, min_batches = 3, patience = 2), 4))
+```
+```
+#> 
+#> Tukey depth:
+#> [1] 0.42 0.00
+```
 
+```{r high-d-spatial}
 cat("\nSpatial depth:\n")
 print(round(spatial_depth(x_hd, data_hd), 4))
 ```
