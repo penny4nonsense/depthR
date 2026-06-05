@@ -1,12 +1,7 @@
 #!/bin/sh
 
 RCPPPARALLEL_CXXFLAGS=`"${R_HOME}/bin/Rscript" -e "cat(RcppParallel::CxxFlags())"`
-RCPPPARALLEL_LIBS=`"${R_HOME}/bin/Rscript" -e "cat(RcppParallel::RcppParallelLibs())"`
-
-# Fallback: if RcppParallelLibs returns empty, link TBB explicitly
-if [ -z "$RCPPPARALLEL_LIBS" ]; then
-    RCPPPARALLEL_LIBS="-ltbb"
-fi
+RCPPPARALLEL_LIBS=`"${R_HOME}/bin/Rscript" -e "cat(RcppParallel::LdFlags())"`
 
 sed -e "s|@RCPPPARALLEL_CXXFLAGS@|${RCPPPARALLEL_CXXFLAGS}|" \
     -e "s|@RCPPPARALLEL_LIBS@|${RCPPPARALLEL_LIBS}|" \

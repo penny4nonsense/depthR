@@ -1,3 +1,16 @@
+# depthR 0.1.5
+
+* Fixed Debian/Linux installation failure. Root cause identified: RcppParallel
+  ships its own bundled TBB and loads it dynamically at runtime on Linux —
+  no compile-time TBB linking is needed or correct. Previous -ltbb fallback
+  was linking against system TBB which has an incompatible ABI with
+  RcppParallel's bundled version.
+* configure script now calls RcppParallel::LdFlags() which returns empty on
+  Linux by design, allowing RcppParallel to handle TBB loading dynamically.
+* Added importFrom(RcppParallel, RcppParallelLibs) to NAMESPACE to ensure
+  RcppParallel is loaded before depthR, triggering dynamic TBB loading.
+* Added RcppParallel to Imports in DESCRIPTION to enforce correct load order.
+
 # depthR 0.1.4
 
 * Set eval = FALSE on all Monte Carlo vignette chunks (Tukey, simplicial,

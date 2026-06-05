@@ -9,6 +9,7 @@
 #' @importFrom Rcpp evalCpp
 #' @importFrom stats median quantile
 #' @importFrom graphics abline legend points
+#' @importFrom RcppParallel RcppParallelLibs
 #' @useDynLib depthR, .registration = TRUE
 NULL
 
