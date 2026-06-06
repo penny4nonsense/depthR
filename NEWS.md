@@ -1,3 +1,12 @@
+# depthR 0.1.6
+
+* Removed #pragma GCC diagnostic suppression from all C++ source files
+  per CRAN policy.
+* Updated Date field in DESCRIPTION.
+* Added Depends: R (>= 3.1.0) to DESCRIPTION to address versioned LinkingTo
+  note.
+* Added cran-comments.md to .Rbuildignore to exclude from package tarball.
+
 # depthR 0.1.5
 
 * Fixed Debian/Linux installation failure. Root cause identified: RcppParallel
@@ -32,7 +41,7 @@
 * Reduced vignette computation time to comply with CRAN's 10-minute check
   limit. Monte Carlo depth functions now use smaller batch sizes and datasets
   in vignette examples.
-  
+
 # depthR 0.1.2
 
 * Fixed Linux/Debian installation failure by replacing src/Makevars $(shell ...)

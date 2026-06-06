@@ -1,6 +1,3 @@
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-#endif
 
 #define EIGEN_DONT_VECTORIZE
 #define EIGEN_DONT_ALIGN
