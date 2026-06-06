@@ -21,16 +21,16 @@ All issues from previous submissions remain fixed:
 
 ## R CMD check results
 
-0 errors | 0 warnings | 3 notes
+0 errors | 0 warnings | 0 notes (local)
 
 ## Notes
 
-* NOTE: Unable to verify current time — environment issue, not a package
-  problem.
-* NOTE: Versioned LinkingTo values for RcppEigen and RcppParallel are only
-  usable in R >= 3.0.2. Addressed by adding Depends: R (>= 3.1.0).
-* NOTE: cran-comments.md at top level — now listed in .Rbuildignore and
-  excluded from the package tarball.
+No notes on local check. CRAN's automated checker may show notes for:
+
+* Versioned LinkingTo values for RcppEigen and RcppParallel — addressed by
+  adding Depends: R (>= 3.1.0).
+* Unable to verify current time — environment issue on CRAN's check machines,
+  not a package problem.
 
 ## Test environments
 
