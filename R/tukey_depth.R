@@ -38,7 +38,7 @@
 #' function. \emph{Annals of Statistics}, 28(2), 461--482.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 #' x    <- matrix(rnorm(25),  nrow = 5,   ncol = 5)

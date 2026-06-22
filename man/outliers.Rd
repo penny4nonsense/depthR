@@ -36,7 +36,7 @@ The threshold can be specified as a quantile of the depth distribution
 (default) or as an absolute depth cutoff.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 dd   <- compute_depth(data)

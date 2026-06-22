@@ -11,6 +11,11 @@ median(x, ...)
 
 \item{...}{Additional arguments passed to methods.}
 }
+\value{
+For \code{depth} objects, a named list with elements \code{point},
+  \code{depth}, and \code{index}. For other objects, see
+  \code{\link[stats]{median}}.
+}
 \description{
 Generic function for computing the median. For \code{depth} objects,
 returns the deepest observation. For all other objects, delegates to

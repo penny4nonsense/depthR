@@ -50,7 +50,7 @@ The deepest point under projection depth is a genuine robust estimator
 of multivariate location.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 x    <- matrix(rnorm(25),  nrow = 5,   ncol = 5)

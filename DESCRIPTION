@@ -1,8 +1,8 @@
 Package: depthR
 Type: Package
 Title: Multivariate Depth Functions for General Dimension
-Version: 0.1.6
-Date: 2026-06-06
+Version: 0.1.8
+Date: 2026-06-22
 Authors@R: c(
     person("Jason", "Parker", email = "jparker588@gmail.com", role = c("aut", "cre"))
   )
@@ -10,8 +10,11 @@ Description: Efficient computation of multivariate statistical depth functions
     in arbitrary dimension d. Implements Mahalanobis depth, Tukey (halfspace)
     depth, Liu simplicial depth (via adaptive Monte Carlo), projection depth,
     and spatial depth. Provides depth-based medians, central regions, outlier
-    detection, and depth-depth plots. C++ backends via 'Rcpp' and 'RcppEigen'
+    detection, and depth-depth plots. 'C++' backends via 'Rcpp' and 'RcppEigen'
     ensure performance at large n and d.
+    References: Liu (1990) <doi:10.1214/aos/1176347507>,
+    Zuo and Serfling (2000) <doi:10.1214/aos/1016218226>,
+    Vardi and Zhang (2000) <doi:10.1073/pnas.97.4.1423>.
 License: GPL (>= 3)
 URL: https://github.com/penny4nonsense/depthR
 BugReports: https://github.com/penny4nonsense/depthR/issues

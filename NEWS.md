@@ -1,3 +1,15 @@
+# depthR 0.1.8
+
+* Replaced remaining \\dontrun{} with \\donttest{} in mahalanobis_depth.cpp
+  roxygen comment, which was generating \\dontrun{} in RcppExports.R.
+
+# depthR 0.1.7
+
+* Quoted 'C++' in DESCRIPTION per CRAN policy.
+* Added literature references to DESCRIPTION with DOIs.
+* Added \value documentation tags to median, rank, and plot.depth.
+* Replaced \dontrun{} with \donttest{} in all examples.
+
 # depthR 0.1.6
 
 * Removed #pragma GCC diagnostic suppression from all C++ source files

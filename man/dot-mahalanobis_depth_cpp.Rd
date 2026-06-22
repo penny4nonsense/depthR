@@ -41,7 +41,7 @@ For a genuine depth function, prefer \code{simplicial_depth} or
 \code{tukey_depth}.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 data <- matrix(rnorm(200), nrow = 100, ncol = 2)
 x    <- matrix(c(0, 0, 3, 3), nrow = 2, byrow = TRUE)

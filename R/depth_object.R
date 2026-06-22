@@ -42,7 +42,7 @@ NULL
 #'   }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 #' dd   <- compute_depth(data, depth_fn = mahalanobis_depth)
@@ -133,6 +133,9 @@ summary.depth <- function(object, outlier_threshold = 0.05, ...) {
 #'
 #' @param x An object. For \code{depth} objects, see \code{\link{median.depth}}.
 #' @param ... Additional arguments passed to methods.
+#' @return For \code{depth} objects, a named list with elements \code{point},
+#'   \code{depth}, and \code{index}. For other objects, see
+#'   \code{\link[stats]{median}}.
 #' @export
 median <- function(x, ...) UseMethod("median")
 
@@ -179,6 +182,9 @@ median.depth <- function(x, ...) {
 #'
 #' @param x An object. For \code{depth} objects, see \code{\link{rank.depth}}.
 #' @param ... Additional arguments passed to methods.
+#' @return For \code{depth} objects, an integer vector of length n where
+#'   rank 1 is the deepest observation. For other objects, see
+#'   \code{\link[base]{rank}}.
 #' @export
 rank <- function(x, ...) UseMethod("rank")
 
@@ -234,7 +240,7 @@ rank.depth <- function(x, ...) {
 #'   }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 #' dd   <- compute_depth(data)
@@ -345,6 +351,9 @@ central_region.depth <- function(x, alpha = 0.50, ...) {
 #' @param main Plot title. If \code{NULL} (default), a sensible title is
 #'   generated automatically.
 #' @param ... Additional arguments passed to \code{plot()}.
+#'
+#' @return Invisibly returns \code{x}, the original \code{depth} object.
+#'   Called primarily for its side effect of producing a plot.
 #'
 #' @export
 plot.depth <- function(x, outlier_threshold = 0.05, main = NULL, ...) {

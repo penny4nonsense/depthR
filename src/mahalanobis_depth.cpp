@@ -84,7 +84,7 @@ double mahal_depth_single(const VectorXd& x,
 //'   Values decrease toward 0 as points move away from the center.
 //'
 //' @examples
-//' \dontrun{
+//' \donttest{
 //' set.seed(42)
 //' data <- matrix(rnorm(200), nrow = 100, ncol = 2)
 //' x    <- matrix(c(0, 0, 3, 3), nrow = 2, byrow = TRUE)

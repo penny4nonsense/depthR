@@ -34,7 +34,7 @@ from which medians, outliers, ranks, and other derived quantities can be
 extracted cheaply without recomputing depth.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 dd   <- compute_depth(data, depth_fn = mahalanobis_depth)

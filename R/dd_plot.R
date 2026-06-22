@@ -54,7 +54,7 @@
 #' \emph{Annals of Statistics}, 27(3), 783--858.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(42)
 #' # Same distribution — points near diagonal
 #' x <- matrix(rnorm(200), nrow = 100, ncol = 2)

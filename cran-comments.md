@@ -1,36 +1,22 @@
-## Resubmission (0.1.6)
+## Resubmission (0.1.8)
 
-This is a sixth resubmission addressing feedback from Uwe Ligges on 2026-06-05.
+This is an eighth resubmission addressing feedback from Konstanze Lauseker
+on 2026-06-19.
 
-The following changes have been made:
+* Replaced remaining \\dontrun{} with \\donttest{} in the roxygen comment
+  in src/mahalanobis_depth.cpp, which was generating \\dontrun{} in the
+  auto-generated R/RcppExports.R file.
 
-* Removed #pragma GCC diagnostic suppression from all C++ source files.
-* Updated Date field in DESCRIPTION to 2026-06-05.
-* Added Depends: R (>= 3.1.0) to DESCRIPTION to address versioned LinkingTo
-  note.
-* Added cran-comments.md to .Rbuildignore to exclude from package tarball.
-
-All issues from previous submissions remain fixed:
-
-* Debian/Linux installation failure resolved — RcppParallel::LdFlags() used
-  in configure script; RcppParallel added to Imports for correct load order.
-* Monte Carlo vignette chunks are eval = FALSE with pre-computed static output.
-* skip_on_cran() added to all slow test files.
-* GitHub URL corrected.
-* Software names single-quoted in DESCRIPTION.
+All issues from previous submissions remain fixed.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes (local)
+0 errors | 0 warnings | 1 note
 
 ## Notes
 
-No notes on local check. CRAN's automated checker may show notes for:
-
-* Versioned LinkingTo values for RcppEigen and RcppParallel — addressed by
-  adding Depends: R (>= 3.1.0).
-* Unable to verify current time — environment issue on CRAN's check machines,
-  not a package problem.
+* NOTE: Unable to verify current time — environment issue on CRAN's check
+  machines, not a package problem.
 
 ## Test environments
 

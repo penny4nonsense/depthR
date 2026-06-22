@@ -11,6 +11,11 @@ rank(x, ...)
 
 \item{...}{Additional arguments passed to methods.}
 }
+\value{
+For \code{depth} objects, an integer vector of length n where
+  rank 1 is the deepest observation. For other objects, see
+  \code{\link[base]{rank}}.
+}
 \description{
 Generic function for ranking. For \code{depth} objects, returns
 depth-based ranks with rank 1 assigned to the deepest observation.

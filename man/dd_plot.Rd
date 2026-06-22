@@ -75,7 +75,7 @@ or below the diagonal) or scale/shape differences (spread of points
 away from the diagonal).
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 # Same distribution — points near diagonal
 x <- matrix(rnorm(200), nrow = 100, ncol = 2)

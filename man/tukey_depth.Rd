@@ -53,7 +53,7 @@ of data points on either side of the query point's projection. The stopping
 rule automatically determines when the estimate has stabilised.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 data <- matrix(rnorm(500), nrow = 100, ncol = 5)
 x    <- matrix(rnorm(25),  nrow = 5,   ncol = 5)

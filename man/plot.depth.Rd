@@ -17,6 +17,10 @@ generated automatically.}
 
 \item{...}{Additional arguments passed to \code{plot()}.}
 }
+\value{
+Invisibly returns \code{x}, the original \code{depth} object.
+  Called primarily for its side effect of producing a plot.
+}
 \description{
 For d = 2, plots the data with point size proportional to depth and
 outliers flagged in red. For d > 2, plots a depth profile
